@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
-import { getAllEvents } from "../../dummy-data";
+import { getAllEvents } from "../../helpers/api-util";
 import EventList from "../../components/events/event-list";
 import EventsSearch from "../../components/events/events-search";
 
-function Index() {
+export default function Index(props) {
   const router = useRouter();
-  const events = getAllEvents();
+  const { events } = props;
 
   function onGetFiltersHandler(year, month) {
     router.push(`/events/${year}/${month}`);
@@ -19,4 +19,13 @@ function Index() {
   );
 }
 
-export default Index;
+export async function getStaticProps() {
+  const events = await getAllEvents();
+
+  return {
+    props: {
+      events: events,
+    },
+    revalidate: 60,
+  };
+}
