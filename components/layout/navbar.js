@@ -5,7 +5,7 @@ function NavBar() {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
-        <Link href="/">EventsDemo</Link>
+        <Link href="/">Events</Link>
       </div>
 
       <nav className={styles.navigation}>

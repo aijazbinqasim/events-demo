@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { useRouter } from "next/router";
@@ -29,10 +30,34 @@ export default function FilterEvents() {
     }
   }, [data]);
 
-  if (!events) return <p className="center">Loading...</p>;
+  let header = (
+    <Head>
+      <title>Events | Filtered events</title>
+      <meta name="description" content="Filtered events." />
+    </Head>
+  );
+
+  if (!events) {
+    return (
+      <>
+        {header}
+        <p className="center">Loading...</p>
+      </>
+    );
+  }
 
   const paramYear = Number(params[0]);
   const paramMonth = Number(params[1]);
+
+  header = (
+    <Head>
+      <title>Events | Filtered events</title>
+      <meta
+        name="description"
+        content={`Filtered events for: ${paramMonth}/${paramYear}.`}
+      />
+    </Head>
+  );
 
   if (
     isNaN(paramYear) ||
@@ -45,6 +70,7 @@ export default function FilterEvents() {
   ) {
     return (
       <>
+        {header}
         <ErrorAlert>
           <p>Invalid filters. Please adjust your filter values!</p>
         </ErrorAlert>
@@ -66,6 +92,7 @@ export default function FilterEvents() {
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
       <>
+        {header}
         <ErrorAlert>
           <p>No events could be found!</p>
         </ErrorAlert>
@@ -80,6 +107,7 @@ export default function FilterEvents() {
 
   return (
     <>
+      {header}
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </>
